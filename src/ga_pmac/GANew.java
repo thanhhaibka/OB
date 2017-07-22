@@ -5,13 +5,15 @@
  */
 package ga_pmac;
 
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
 /**
- *
  * @author prnc
  */
 public class GANew {
@@ -22,29 +24,40 @@ public class GANew {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        for (int index = 1; index < 2; index++) {
-            String filename = "empty"+ ".txt";
-            ArrayList<Obstacle> obstacles = loadObstaclesFromFile(filename);
-            Individual ind = new Individual(obstacles);
-            double s1 = 0;
-            for (int k = 0; k < 30; k++) {
+        long time = 0;
+        for (int index1 = 0; index1 <= 3; index1++) {
+            for (int index = 1; index < 11; index++) {
+                String filename = "test" + index1 + index + ".txt";
+                ArrayList<Obstacle> obstacles = loadObstaclesFromFile(filename);
+                Individual ind = new Individual(obstacles);
+                double s1 = 0;
+                for (int k = 0; k < 30; k++) {
+                    time = System.currentTimeMillis();
 //        System.err.println(obstacles.get(0));
-                Population pop = new Population(50, obstacles);
+                    Population pop = new Population(50, obstacles);
 //        Chromosome c= pop.getChrom(0);
-                for (int i = 0; i < 1000; i++) {
-                    pop = GA.evol(pop, obstacles);
-                    Individual newC = pop.getChrom(0);
+                    for (int i = 0; i < 1000; i++) {
+                        pop = GA.evol(pop, obstacles);
+                        Individual newC = pop.getChrom(0);
 //            for(int k=0; k< 50; k++){
 //                System.err.println(k+": "+pop.getChrom(k).setAdaptiveIndex());
 //                System.out.println(k+": "+pop.getChrom(k).setArea(1000000));
 //            }
 //            System.out.println(newC.setAdaptiveIndex()+" ");
+                    }
+                    ind = pop.getChrom(0);
+                    try {
+                        FileWriter fileWriter = new FileWriter(filename+"ketqua", true);
+                        fileWriter.append(k + ":\t" + (System.currentTimeMillis() - time) + " (s)\t"+ ind.setArea(1000000) +" (m2)");
+                        fileWriter.flush();
+                        fileWriter.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-                ind = pop.getChrom(0);
-                s1 += ind.setArea(1000000);
-            }
 //            new Draw(ind);
-            System.out.print(s1 / 30 + " ");
+//                System.out.print(s1 / 30 + " ");
+            }
         }
 //        Draw d= new Draw(pop.getChrom(0));
     }

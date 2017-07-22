@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="GA_PMAC">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/GA_PMAC.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
